@@ -361,17 +361,16 @@
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
       .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
       .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-      .atmosphereColor('rgba(26,84,144,0.8)')
+      。atmosphereColor('rgba(26,84,144,0.8)')
       .atmosphereAltitude(0.25);
  
-  const VPS_COORD = [39.9042, 116.4074]; // 北京纬度、经度，换成你 VPS 实际位置
-  const R = 200; // 距离地球中心的距离，可调整
-  const lat = VPS_COORD[0] * Math.PI / 180;
-  const lng = VPS_COORD[1] * Math.PI / 180;
-  
-  const x = R * Math.cos(lat) * Math.cos(lng);
-  const y = R * Math.sin(lat);
-  const z = R * Math.cos(lat) * Math.sin(lng);
+    const VPS_COORD = [39.9042, 116.4074]; // 北京纬度、经度，换成你 VPS 实际位置
+    const R = 200; // 距离地球中心的距离，可调整
+    const lat = VPS_COORD[0] * Math.PI / 180;
+    const lng = VPS_COORD[1] * Math.PI / 180;
+    const x = R * Math.cos(lat) * Math.cos(lng);
+    const y = R * Math.sin(lat);
+    const z = R * Math.cos(lat) * Math.sin(lng);
 
   globe.camera().position.set(x, y, z);
   globe.camera().lookAt(new THREE.Vector3(0,0,0));
