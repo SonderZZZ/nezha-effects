@@ -127,27 +127,36 @@
 
 // ===== 主体 JS：加载 IP Info =====
 (function () {
-
     function getFromIpapi() {
-        return fetch("https://ipapi.co/json/").then(r => r.json()).then(d => ({
-            ip: d.ip || "",
-            country: d.country_name || "",
-            city: d.city || ""
-        }));
+        return fetch("https://ipapi.co/json/")
+            。键，然后(r => {
+                if (!r。ok) throw new 错误("ipapi failed");
+                return r.json();
+            })
+            。键，然后(d => ({
+                ip: d.ip || "",
+                country: d.country_name || "",
+                city: d.city || ""
+            }));
     }
 
     function getFromIpinfo() {
-        return fetch("https://ipinfo.io/json").then(r => r.json()).then(d => ({
-            ip: d.ip || "",
-            country: d.country || "",
-            city: d.city || d.region || ""
-        }));
+        return fetch("https://ipinfo.io/json?token=YOUR_TOKEN_HERE") // 可注册免费 token
+            。键，然后(r => {
+                if (!r.ok) throw new Error("ipinfo failed");
+                return r.json();
+            })
+            。键，然后(d => ({
+                ip: d。ip || ""，
+                country: d。country || ""，
+                city: d.city || d.region || ""
+            }));
     }
 
     function createBar() {
         if (document.getElementById("ip-bar")) return;
         const bar = document.createElement("div");
-        bar.id = "ip-bar";
+        bar。id = "ip-bar";
         bar.innerHTML = `
             <div class="ip-inner">
                 <div class="ip-icon"></div>
@@ -158,25 +167,22 @@
 
     function loadIP() {
         createBar();
-        const el = document.getElementById("ip-val");
+        const el = document。getElementById("ip-val");
 
         getFromIpapi()
-            .catch(getFromIpinfo)
-            .then(res => {
+            。catch(() => getFromIpinfo())
+            .键，然后(res => {
                 const ip = res.ip || "";
                 const country = res.country || "";
                 const city = res.city || "";
-                let loc = "";
-                if (country && city && country !== city) loc = `${country} · ${city}`;
-                else loc = country || city || "";
+                let loc = country && city && country !== city ? `${country} · ${city}` : country || city || "";
                 el.textContent = loc ? `${ip} ｜ ${loc}` : ip;
             })
             .catch(() => el.textContent = "Failed to get IP");
     }
 
-    if (document.readyState === "loading")
+    if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", loadIP);
-    else
-        loadIP();
-
+    } else loadIP();
 })();
+
