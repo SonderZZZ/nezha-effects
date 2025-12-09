@@ -1,6 +1,7 @@
-(function () {
-    // --- 样式 ---
-    const style = `
+(function() {
+    function init() {
+        // --- 样式 ---
+        const style = `
 #ip-bar {
     position: fixed;
     left: 50%;
@@ -80,55 +81,39 @@
     font-weight: 600;
     margin-right: 4px;
 }`;
-    
-    // 添加样式
-    const styleEl = document.createElement('style');
-    styleEl.textContent = style;
-    document.head.appendChild(styleEl);
+        const styleEl = document.createElement('style');
+        styleEl.textContent = style;
+        document.head.appendChild(styleEl);
 
-    // --- 创建 IP 条 ---
-    function createBar() {
-        if (document.getElementById("ip-bar")) return;
-        const bar = document.createElement("div");
-        bar.id = "ip-bar";
-        bar.innerHTML = `
-            <div class="ip-inner">
-                <div class="ip-icon"></div>
-                <div class="ip-text"><span class="ip-l">Your IP:</span><span id="ip-val">Loading...</span></div>
-            </div>`;
-        document.body.appendChild(bar);
-    }
+        // --- 创建 IP 条 ---
+        if (!document.getElementById("ip-bar")) {
+            const bar = document.createElement("div");
+            bar.id = "ip-bar";
+            bar.innerHTML = `
+                <div class="ip-inner">
+                    <div class="ip-icon"></div>
+                    <div class="ip-text"><span class="ip-l">Your IP:</span><span id="ip-val">Loading...</span></div>
+                </div>`;
+            document.body.appendChild(bar);
+        }
 
-    // --- 获取 IP + 地理信息 ---
-    function getIpGeo() {
-        return fetch("https://ipwhois.app/json/")
-            .then(r => {
-                if (!r.ok) throw new Error("IP fetch failed");
-                return r.json();
-            })
-            .then(d => ({
-                ip: d.ip || "",
-                country: d.country || "",
-                city: d.city || ""
-            }));
-    }
-
-    // --- 加载 IP ---
-    function loadIP() {
-        createBar();
-        const el = document.getElementById("ip-val");
-        getIpGeo()
-            .then(res => {
-                const ip = res.ip || "";
-                const country = res.country || "";
-                const city = res.city || "";
+        // --- 获取 IP ---
+        fetch("https://ipwhois.app/json/")
+            .then(r => r.json())
+            .then(d => {
+                const ip = d.ip || "";
+                const country = d.country || "";
+                const city = d.city || "";
                 let loc = country && city && country !== city ? `${country} · ${city}` : country || city || "";
-                el.textContent = loc ? `${ip} ｜ ${loc}` : ip;
+                document.getElementById("ip-val").textContent = loc ? `${ip} ｜ ${loc}` : ip;
             })
-            .catch(() => el.textContent = "Failed to get IP");
+            .catch(() => document.getElementById("ip-val").textContent = "Failed to get IP");
     }
 
+    // 保证 DOM 加载完成再执行
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", loadIP);
-    } else loadIP();
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
 })();
