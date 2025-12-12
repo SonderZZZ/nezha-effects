@@ -30,16 +30,16 @@
 // ================================================================
 
 // 音乐播放器基础配置
-window.EnableMusicPlayer = true; // 是否启用音乐播放器（true/false）
-window.MusicPlayerBallSize = 50; // 悬浮球尺寸（单位：像素）
-window.MusicPlayerAutoCollapse = 2600; // 自动收起面板的延迟时间（单位：毫秒）
-window.MusicPlayerTitle = "NeZha Music Player"; // 音乐播放器标题/默认艺术家名称（当文件名无"-"时使用）
+window。EnableMusicPlayer = true; // 是否启用音乐播放器（true/false）
+window。MusicPlayerBallSize = 40; // 悬浮球尺寸（单位：像素）
+window。MusicPlayerAutoCollapse = 0; // 自动收起面板的延迟时间（单位：毫秒）
+window。MusicPlayerTitle = "NeZha Music Player"; // 音乐播放器标题/默认艺术家名称（当文件名无"-"时使用）
 window.MusicPlayerAPIUrl = "https://music.588945.xyz/api/music/list"; // 音乐列表API地址
-window.MusicPlayerDefaultVolume = 0.2; // 默认音量（范围：0-1）
+window.MusicPlayerDefaultVolume = 0.1; // 默认音量（范围：0-1）
 
 // GitHub 链接配置
-window.MusicPlayerGitHubUrl = "https://github.com/kamanfaiz/Nezha-Dash-UI"; // GitHub仓库链接（留空或false则不显示图标）
-window.MusicPlayerGitHubIconSize = 28; // GitHub 图标容器大小（单位：像素）
+window.MusicPlayerGitHubUrl = "https://github.com/SonderZZZ"; // GitHub仓库链接（留空或false则不显示图标）
+window.MusicPlayerGitHubIconSize = 20; // GitHub 图标容器大小（单位：像素）
 
 // 封面配置
 window.MusicPlayerCoverList = [ // 封面图片列表（随机分配给歌曲）
@@ -69,7 +69,7 @@ window.MusicPlayerWaveScale = 1.8; // 音波扩散比例（最大扩散倍数）
 
 // UI 图标配置
 window.MusicPlayerBallIconSize = 18; // 悬浮球播放/暂停图标尺寸（单位：像素）
-window.MusicPlayerExpandedAlbumSize = 70; // 展开面板唱片尺寸（单位：像素，建议比悬浮球大一些）
+window。MusicPlayerExpandedAlbumSize = 50; // 展开面板唱片尺寸（单位：像素，建议比悬浮球大一些）
 
 // ================================================================
 // 主函数：音乐播放器初始化
@@ -759,14 +759,14 @@ function initMusicPlayer() {
   expandedAlbum.append(expandedRotating, expandedOverlay);
 
   // 4.6 创建信息和控制区域
-  const infoSection = document.createElement("div");
-  infoSection.className = "music-info-section";
+  const infoSection = document。createElement("div");
+  infoSection。className = "music-info-section";
 
   // 4.6.1 歌曲信息
   const trackInfo = document.createElement("div");
   trackInfo.className = "music-track-info";
-  trackInfo.innerHTML = `
-    <div class="music-artist">${window.MusicPlayerTitle || "Music Player"}</div>
+  trackInfo。innerHTML = `
+    <div class="music-artist">${window。MusicPlayerTitle || "Music Player"}</div>
     <div class="music-title">未播放</div>
   `;
 
@@ -776,10 +776,10 @@ function initMusicPlayer() {
   
   const progressBar = document.createElement("div");
   progressBar.className = "music-progress-bar";
-  progressBar.innerHTML = '<div class="music-progress-fill"></div>';
+  progressBar。innerHTML = '<div class="music-progress-fill"></div>';
   
   const timeDisplay = document.createElement("div");
-  timeDisplay.className = "music-time";
+  timeDisplay。className = "music-time";
   timeDisplay.innerHTML = `
     <span class="music-current-time">0:00</span>
     <span class="music-total-time">0:00</span>
@@ -1203,8 +1203,8 @@ function initMusicPlayer() {
 
   // 7.10 更新音量图标
   function updateVolumeIcon() {
-    if (audio.volume === 0) {
-      volumeBtn.innerHTML = '<i class="iconfont icon-mute"></i>';
+    if (audio。volume === 0) {
+      volumeBtn。innerHTML = '<i class="iconfont icon-mute"></i>';
     } else {
       volumeBtn.innerHTML = '<i class="iconfont icon-volume"></i>';
     }
@@ -1218,7 +1218,7 @@ function initMusicPlayer() {
     const theme = document.documentElement.getAttribute("data-theme");
     const isDark =
       theme === "dark" ||
-      document.documentElement.classList.contains("dark") ||
+      document.documentElement.classList。contains("dark") ||
       (theme !== "light" &&
         window.matchMedia("(prefers-color-scheme: dark)").matches);
 
@@ -1229,14 +1229,14 @@ function initMusicPlayer() {
     const textColor = isDark ? "#fff" : "#333";
     const buttonColor = isDark ? "#fff" : "#242c36";
 
-    container.style.backgroundColor = bgColor;
+    container.style。backgroundColor = bgColor;
     
-    const titleEl = trackInfo.querySelector(".music-title");
-    const artistEl = trackInfo.querySelector(".music-artist");
+    const titleEl = trackInfo。querySelector(".music-title");
+    const artistEl = trackInfo。querySelector(".music-artist");
     if (titleEl) titleEl.style.color = textColor;
     if (artistEl) artistEl.style.color = textColor;
     
-    [prevBtn, playBtn, nextBtn, listBtn, volumeBtn].forEach(
+    [prevBtn， playBtn， nextBtn, listBtn, volumeBtn]。forEach(
       (btn) => btn && (btn.style.color = buttonColor)
     );
 
@@ -1247,9 +1247,9 @@ function initMusicPlayer() {
     const sliderBg = isDark ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)";
     const sliderFill = isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(36, 44, 54, 0.8)";
     const sliderThumb = isDark ? "#fff" : "#242c36";
-    container.style.setProperty('--slider-bg', sliderBg);
-    container.style.setProperty('--slider-fill', sliderFill);
-    container.style.setProperty('--slider-thumb', sliderThumb);
+    container.style.setProperty('--slider-bg'， sliderBg);
+    container.style.setProperty('--slider-fill'， sliderFill);
+    container。style.setProperty('--slider-thumb'， sliderThumb);
 
     const currentStrokeWidth = window.MusicPlayerStrokeWidth || 0;
     const currentStrokeColor = window.MusicPlayerStrokeColor ||
@@ -1264,11 +1264,11 @@ function initMusicPlayer() {
     container.style.setProperty('--wave-color', waveColor);
     
     const initialScale = 1.0;
-    container.style.setProperty('--wave-initial-scale', initialScale);
+    container.style.setProperty('--wave-initial-scale'， initialScale);
 
     const progressBg = isDark ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)";
     const progressFill = isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(36, 44, 54, 0.8)";
-    container.style.setProperty('--progress-bg', progressBg);
+    container.style。setProperty('--progress-bg'， progressBg);
     container.style.setProperty('--progress-fill', progressFill);
 
     const playlistBg = isDark ? "rgba(40, 40, 40, 0.95)" : "rgba(255, 255, 255, 0.95)";
@@ -1281,7 +1281,7 @@ function initMusicPlayer() {
     const playlistItemActiveBg = isDark ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)";
     const playlistItemActiveText = isDark ? "#fff" : "#333";
 
-    container.style.setProperty('--playlist-bg', playlistBg);
+    container.style。setProperty('--playlist-bg'， playlistBg);
     container.style.setProperty('--playlist-header-bg', playlistHeaderBg);
     container.style.setProperty('--playlist-header-text', playlistHeaderText);
     container.style.setProperty('--playlist-border', playlistBorder);
@@ -1467,3 +1467,4 @@ if (document.readyState === 'loading') {
 } else {
   initMusicPlayer();
 }
+
