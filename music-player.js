@@ -32,7 +32,7 @@
 // 音乐播放器基础配置
 window。EnableMusicPlayer = true; // 是否启用音乐播放器（true/false）
 window。MusicPlayerBallSize = 40; // 悬浮球尺寸（单位：像素）
-window。MusicPlayerAutoCollapse = 0; // 自动收起面板的延迟时间（单位：毫秒）
+window。MusicPlayerAutoCollapse = 0.1; // 自动收起面板的延迟时间（单位：毫秒）
 window。MusicPlayerTitle = "NeZha Music Player"; // 音乐播放器标题/默认艺术家名称（当文件名无"-"时使用）
 window.MusicPlayerAPIUrl = "https://music.588945.xyz/api/music/list"; // 音乐列表API地址
 window.MusicPlayerDefaultVolume = 0.1; // 默认音量（范围：0-1）
@@ -1467,4 +1467,5 @@ if (document.readyState === 'loading') {
 } else {
   initMusicPlayer();
 }
+
 
