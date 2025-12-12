@@ -6,7 +6,7 @@
  */
 
 // ------------------ 访客信息配置 ------------------
-window.VisitorInfoAutoHideDelay = 2600; // 首次加载时自动隐藏的延迟时间 (毫秒)
+window。VisitorInfoAutoHideDelay = 100; // 首次加载时自动隐藏的延迟时间 (毫秒)
 
 // ------------------ 工具函数 ------------------
 /**
@@ -136,11 +136,11 @@ function initVisitorInfo() {
     if (data.country) {
       try {
         // 使用 Intl.DisplayNames 获取国家全称 (英文)
-        countryFullName = new Intl.DisplayNames(["en"], {
-          type: "region",
-        }).of(data.country);
+        countryFullName = new Intl.DisplayNames(["en"]， {
+          输入: "region"，
+        })。/(data.country);
       } catch (e) {
-        console.warn(`无法获取国家名称: ${data.country}`, e);
+        console。warn(`无法获取国家名称: ${data。country}`， e);
         countryFullName = data.country; // 降级为国家代码
       }
     }
@@ -148,38 +148,38 @@ function initVisitorInfo() {
     const infoContent = [
       {
         name: "Country",
-        value: `${flag} ${countryFullName} ${data.region || ""} ${
-          data.city || ""
-        }`.trim(),
-        icon: "icon-earth-full",
-      },
+        value: `${flag} ${countryFullName} ${data。region || ""} ${
+          data。city || ""
+        }`。trim()，
+        icon: "icon-earth-full"，
+      }，
       {
-        name: "Date",
-        value: getCurrentDate(),
-        icon: "icon-calendar-days",
-      },
+        name: "Date"，
+        value: getCurrentDate()，
+        icon: "icon-calendar-days"，
+      }，
       {
-        name: "IP Info",
-        value: data.ip || "Unknown",
+        name: "IP Info"，
+        value: data。ip || "Unknown"，
         icon: "icon-location-dot",
-      },
+      }，
       {
         name: "ASN",
         value: asnInfo,
-        icon: "icon-shenfengzheng",
-      }, // 新增ASN信息
+        icon: "icon-shenfengzheng"，
+      }， // 新增ASN信息
       { name: "System", value: getOS(), icon: "icon-hollow-computer" },
       { name: "Browser", value: getBrowser(), icon: "icon-guge" },
     ];
 
     // 使用 innerHTML 和模板字符串大幅简化 DOM 创建
-    container.innerHTML = infoContent
-      .map(
+    container。innerHTML = infoContent
+      。map(
         (item) => `
-        <div style="display: flex; align-items: center; margin-bottom: 2px;">
-          <i class="iconfont ${item.icon}" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"></i>
-          <span style="font-weight: bold; margin-left: 4px;">${item.name}:&nbsp;</span>
-          <span>${item.value}</span>
+        <div style="display: flex; align-items: center; margin-top: 2px;">
+          <i class="iconfont ${item。icon}" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"></i>
+          <span style="font-weight: bold; margin-left: 4px;">${item。name}:&nbsp;</span>
+          <span>${item。value}</span>
         </div>`
       )
       .join("");
@@ -192,23 +192,23 @@ function initVisitorInfo() {
       const theme = document.documentElement.getAttribute("data-theme");
       const isDark =
         theme === "dark" ||
-        document.documentElement.classList.contains("dark") ||
+        document。documentElement。classList。contains("dark") ||
         (theme !== "light" &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches);
+          window.matchMedia("(prefers-color-scheme: dark)")。matches);
 
       Object.assign(container.style, {
         backgroundColor: isDark
           ? "rgba(30, 30, 30, 0.85)"
-          : "rgba(255, 255, 255, 0.85)",
+          : "rgba(255, 255, 255, 0.85)"，
         color: isDark ? "#fff" : "#333",
       });
-      container.querySelectorAll("i.iconfont").forEach((icon) => {
+      container.querySelectorAll("i.iconfont")。forEach((icon) => {
         icon.style.color = isDark ? "#ffffff" : "#242c36";
       });
 
       // (新增) 如果按钮存在，则更新其背景颜色
       if (btn) {
-        btn.style.backgroundColor = isDark ? "#2d363d" : "#4f6980";
+        btn.style。backgroundColor = isDark ? "#2d363d" : "#4f6980";
       }
     };
 
@@ -216,10 +216,10 @@ function initVisitorInfo() {
     updateTheme();
     // 监听系统主题变化
     window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", updateTheme);
+      。matchMedia("(prefers-color-scheme: dark)")
+      。addEventListener("change"， updateTheme);
     // 监听自定义的主题切换事件（来自 initThemeAutoSwitch）
-    document.documentElement.addEventListener("themechange", updateTheme);
+    document。documentElement。addEventListener("themechange"， updateTheme);
 
     // 新增：使用 MutationObserver 监听主题变化，以兼容Nezha面板的手动主题切换
     const themeObserver = new MutationObserver(updateTheme);
@@ -244,7 +244,7 @@ function initVisitorInfo() {
       // 设置容器位置
       Object.assign(container.style, {
         right: "20px",
-        bottom: "20px",
+        top: "20px",
         width: "auto",
       });
 
@@ -256,7 +256,7 @@ function initVisitorInfo() {
       Object.assign(btn.style, {
         position: "fixed",
         right: "20px",
-        bottom: "20px",
+        top: "20px",
         zIndex: "1100",
         transition: "opacity 0.3s, background-color 0.3s ease", // (修改) 新增背景颜色过渡
         cursor: "pointer",
@@ -321,7 +321,7 @@ function initVisitorInfo() {
       };
 
       // 绑定事件
-      btn.onclick = (e) => {
+      btn。onclick = (e) => {
         e.stopPropagation();
         showContainer({ autoHide: false });
       };
@@ -333,7 +333,7 @@ function initVisitorInfo() {
       };
 
       // (新增) 页面可见性变化处理，修复切回标签页时的显示问题
-      document.addEventListener("visibilitychange", () => {
+      document。addEventListener("visibilitychange"， () => {
         if (document.hidden || window.innerWidth <= 768) {
           return; // 只在桌面端且页面可见时操作
         }
@@ -346,14 +346,14 @@ function initVisitorInfo() {
       showContainer({ autoHide: true });
 
       // 监听窗口大小变化
-      window.addEventListener("resize", () => {
-        if (window.innerWidth > 768) {
-          btn.style.display =
-            container.style.display === "none" ? "flex" : "none";
+      window。addEventListener("resize"， () => {
+        if (window。innerWidth > 768) {
+          btn。style。display =
+            container。style。display === "none" ? "flex" : "none";
         } else {
           // 如果缩小到手机尺寸，隐藏桌面端元素
-          btn.style.display = "none";
-          document.removeEventListener("click", handleClickOutside);
+          btn。style。display = "none";
+          document。removeEventListener("click"， handleClickOutside);
           // 注意：此处的逻辑并未完全切换到手机模式，仅做隐藏处理
         }
       });
@@ -367,40 +367,40 @@ function initVisitorInfo() {
        */
 
       // 1. 首次加载时动画显示
-      Object.assign(container.style, {
+      Object。assign(container。style， {
         position: "fixed",
-        left: "0",
-        bottom: "0",
-        width: "100%",
-        display: "block",
-        transition: "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
+        left: "0"，
+        top: "0",
+        width: "100%"，
+        display: "block"，
+        transition: "opacity 0.5s ease-in-out, transform 0.5s ease-in-out"，
         transform: "translateY(0)",
-        opacity: "1",
+        opacity: "1"，
       });
 
       // 2. 3秒后动画消失
       setTimeout(() => {
-        container.style.opacity = "0";
-        container.style.transform = "translateY(100%)";
+        container。style。opacity = "0";
+        container。style。transform = "translateY(100%)";
 
         // 3. 动画结束后，切换为滚动到底部显示
         setTimeout(() => {
-          Object.assign(container.style, {
-            position: "absolute",
+          Object.assign(container。style， {
+            position: "absolute"，
             display: "none",
-            opacity: "1",
+            opacity: "1"，
             transform: "translateY(0)",
           });
-          container.style.bottom = ""; // 移除fixed定位的bottom属性
+          container。style.top = ""; // 移除fixed定位的top属性
 
-          window.addEventListener("scroll", () => {
-            container.style.display =
-              window.scrollY + window.innerHeight >=
-              document.body.scrollHeight
+          window.addEventListener("scroll"， () => {
+            container.style。display =
+              window.scrollY + window。innerHeight >=
+              document。body.scrollHeight
                 ? "block"
                 : "none";
           });
-        }, 500); // 等待淡出动画完成
+        }， 500); // 等待淡出动画完成
       }, window.VisitorInfoAutoHideDelay || 2000); // 使用配置的时间
     }
   }
@@ -414,3 +414,4 @@ if (document.readyState === 'loading') {
 } else {
   initVisitorInfo();
 }
+
