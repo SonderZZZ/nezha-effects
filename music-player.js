@@ -32,13 +32,13 @@
 // 音乐播放器基础配置
 window.EnableMusicPlayer = true; // 是否启用音乐播放器（true/false）
 window.MusicPlayerBallSize = 50; // 悬浮球尺寸（单位：像素）
-window.MusicPlayerAutoCollapse = 50; // 自动收起面板的延迟时间（单位：毫秒）
+window.MusicPlayerAutoCollapse = 1000; // 自动收起面板的延迟时间（单位：毫秒）
 window.MusicPlayerTitle = "NeZha Music Player"; // 音乐播放器标题/默认艺术家名称（当文件名无"-"时使用）
 window.MusicPlayerAPIUrl = "https://music.588945.xyz/api/music/list"; // 音乐列表API地址
-window.MusicPlayerDefaultVolume = 0.1; // 默认音量（范围：0-1）
+window.MusicPlayerDefaultVolume = 0.2; // 默认音量（范围：0-1）
 
 // GitHub 链接配置
-window.MusicPlayerGitHubUrl = "https://github.com/SonderZZZ/nezha-effects"; // GitHub仓库链接（留空或false则不显示图标）
+window.MusicPlayerGitHubUrl = "https://github.com/kamanfaiz/Nezha-Dash-UI"; // GitHub仓库链接（留空或false则不显示图标）
 window.MusicPlayerGitHubIconSize = 28; // GitHub 图标容器大小（单位：像素）
 
 // 封面配置
@@ -649,7 +649,7 @@ function initMusicPlayer() {
     background: rgba(0, 0, 0, 0.15);
   }
 `;
-  document。head。appendChild(styleSheet);
+  document.head.appendChild(styleSheet);
 
   // ================================================================
   // 第三部分：核心变量声明
@@ -674,154 +674,154 @@ function initMusicPlayer() {
   let lastVolume = 0.5;
   
   // 尺寸配置
-  const ballSize = window。MusicPlayerBallSize || 50;
+  const ballSize = window.MusicPlayerBallSize || 50;
   
   // 音频对象
   const audio = new Audio();
-  audio。volume = window。MusicPlayerDefaultVolume || 0.5;
+  audio.volume = window.MusicPlayerDefaultVolume || 0.5;
 
   // ================================================================
   // 第四部分：UI 元素创建
   // ================================================================
   
   // 4.1 创建主容器
-  const container = document。createElement("div");
-  container。className = "music-player-container";
-  container.style。width = `${ballSize}px`;
-  container。style。height = `${ballSize}px`;
-  document。body。appendChild(container);
+  const container = document.createElement("div");
+  container.className = "music-player-container";
+  container.style.width = `${ballSize}px`;
+  container.style.height = `${ballSize}px`;
+  document.body.appendChild(container);
 
   // 4.2 创建主内容区域
-  const mainSection = document。createElement("div");
-  mainSection。className = "music-player-main";
+  const mainSection = document.createElement("div");
+  mainSection.className = "music-player-main";
 
   // 4.3 创建 GitHub 链接图标
   let githubLink = null;
-  if (window。MusicPlayerGitHubUrl && window。MusicPlayerGitHubUrl.trim() !== "" && window.MusicPlayerGitHubUrl !== false) {
-    const githubIconSize = window。MusicPlayerGitHubIconSize || 24;
-    container.style。setProperty('--github-icon-size'， `${githubIconSize}px`);
+  if (window.MusicPlayerGitHubUrl && window.MusicPlayerGitHubUrl.trim() !== "" && window.MusicPlayerGitHubUrl !== false) {
+    const githubIconSize = window.MusicPlayerGitHubIconSize || 24;
+    container.style.setProperty('--github-icon-size', `${githubIconSize}px`);
     
     githubLink = document.createElement("a");
     githubLink.className = "music-github-link";
-    githubLink。href = window。MusicPlayerGitHubUrl;
-    githubLink。target = "_blank";
+    githubLink.href = window.MusicPlayerGitHubUrl;
+    githubLink.target = "_blank";
     githubLink.rel = "noopener noreferrer";
-    githubLink。title = "View on GitHub";
+    githubLink.title = "View on GitHub";
     githubLink.innerHTML = '<i class="iconfont icon-github"></i>';
     githubLink.style.display = "none";
-    githubLink。onclick = (e) => e.stopPropagation();
+    githubLink.onclick = (e) => e.stopPropagation();
     mainSection.appendChild(githubLink);
   }
 
   // 4.4 创建悬浮球封面区域（收起状态）
   const ballAlbum = document.createElement("div");
-  ballAlbum。className = "music-ball-album";
+  ballAlbum.className = "music-ball-album";
   ballAlbum.style.width = `${ballSize}px`;
-  ballAlbum。style.height = `${ballSize}px`;
+  ballAlbum.style.height = `${ballSize}px`;
 
   const ballRotating = document.createElement("div");
-  ballRotating。className = "music-ball-rotating";
+  ballRotating.className = "music-ball-rotating";
 
   const ballImage = document.createElement("img");
-  ballImage。className = "music-ball-image";
-  ballImage。style。display = 'none';
+  ballImage.className = "music-ball-image";
+  ballImage.style.display = 'none';
 
-  const ballOverlay = document。createElement("div");
-  ballOverlay。className = "music-ball-overlay";
-  const ballIconSize = window。MusicPlayerBallIconSize || 18;
-  ballOverlay。innerHTML = `<i class="iconfont icon-play" style="font-size: ${ballIconSize}px;"></i>`;
+  const ballOverlay = document.createElement("div");
+  ballOverlay.className = "music-ball-overlay";
+  const ballIconSize = window.MusicPlayerBallIconSize || 18;
+  ballOverlay.innerHTML = `<i class="iconfont icon-play" style="font-size: ${ballIconSize}px;"></i>`;
 
-  ballRotating。appendChild(ballImage);
-  ballAlbum。append(ballRotating， ballOverlay);
+  ballRotating.appendChild(ballImage);
+  ballAlbum.append(ballRotating, ballOverlay);
 
   // 4.5 创建展开状态封面区域（唱片效果）
-  const expandedAlbum = document。createElement("div");
-  expandedAlbum。className = "music-expanded-album";
-  const expandedAlbumSize = window。MusicPlayerExpandedAlbumSize || ballSize;
-  expandedAlbum。style。width = `${expandedAlbumSize}px`;
-  expandedAlbum。style。height = `${expandedAlbumSize}px`;
+  const expandedAlbum = document.createElement("div");
+  expandedAlbum.className = "music-expanded-album";
+  const expandedAlbumSize = window.MusicPlayerExpandedAlbumSize || ballSize;
+  expandedAlbum.style.width = `${expandedAlbumSize}px`;
+  expandedAlbum.style.height = `${expandedAlbumSize}px`;
 
-  const expandedRotating = document。createElement("div");
-  expandedRotating。className = "music-expanded-rotating";
+  const expandedRotating = document.createElement("div");
+  expandedRotating.className = "music-expanded-rotating";
 
   const expandedBase = document.createElement("div");
-  expandedBase。className = "music-expanded-base";
+  expandedBase.className = "music-expanded-base";
 
-  const expandedImage = document。createElement("img");
+  const expandedImage = document.createElement("img");
   expandedImage.className = "music-expanded-image";
-  expandedImage。style。display = 'none';
+  expandedImage.style.display = 'none';
 
-  const expandedOverlay = document。createElement("div");
-  expandedOverlay。className = "music-expanded-overlay";
-  expandedOverlay。innerHTML = '<i class="iconfont icon-play" style="font-size: 24px;"></i>';
+  const expandedOverlay = document.createElement("div");
+  expandedOverlay.className = "music-expanded-overlay";
+  expandedOverlay.innerHTML = '<i class="iconfont icon-play" style="font-size: 24px;"></i>';
 
-  expandedRotating.append(expandedBase， expandedImage);
-  expandedAlbum。append(expandedRotating， expandedOverlay);
+  expandedRotating.append(expandedBase, expandedImage);
+  expandedAlbum.append(expandedRotating, expandedOverlay);
 
   // 4.6 创建信息和控制区域
-  const infoSection = document。createElement("div");
-  infoSection。className = "music-info-section";
+  const infoSection = document.createElement("div");
+  infoSection.className = "music-info-section";
 
   // 4.6.1 歌曲信息
-  const trackInfo = document。createElement("div");
-  trackInfo。className = "music-track-info";
-  trackInfo。innerHTML = `
-    <div class="music-artist">${window。MusicPlayerTitle || "Music Player"}</div>
+  const trackInfo = document.createElement("div");
+  trackInfo.className = "music-track-info";
+  trackInfo.innerHTML = `
+    <div class="music-artist">${window.MusicPlayerTitle || "Music Player"}</div>
     <div class="music-title">未播放</div>
   `;
 
   // 4.6.2 进度条区域
-  const progressSection = document。createElement("div");
+  const progressSection = document.createElement("div");
   progressSection.className = "music-progress-section";
   
-  const progressBar = document。createElement("div");
+  const progressBar = document.createElement("div");
   progressBar.className = "music-progress-bar";
-  progressBar。innerHTML = '<div class="music-progress-fill"></div>';
+  progressBar.innerHTML = '<div class="music-progress-fill"></div>';
   
-  const timeDisplay = document。createElement("div");
+  const timeDisplay = document.createElement("div");
   timeDisplay.className = "music-time";
   timeDisplay.innerHTML = `
     <span class="music-current-time">0:00</span>
     <span class="music-total-time">0:00</span>
   `;
   
-  progressSection.append(progressBar， timeDisplay);
+  progressSection.append(progressBar, timeDisplay);
 
   // 4.6.3 控制按钮
   const controls = document.createElement("div");
-  controls。className = "music-controls";
+  controls.className = "music-controls";
 
-  const prevBtn = document。createElement("button");
-  prevBtn。className = "music-btn";
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "music-btn";
   prevBtn.innerHTML = '<i class="iconfont icon-backward"></i>';
   prevBtn.title = "上一曲";
 
   const playBtn = document.createElement("button");
-  playBtn。className = "music-btn play-btn";
+  playBtn.className = "music-btn play-btn";
   playBtn.innerHTML = '<i class="iconfont icon-play"></i>';
-  playBtn。title = "播放/暂停";
+  playBtn.title = "播放/暂停";
 
-  const nextBtn = document。createElement("button");
+  const nextBtn = document.createElement("button");
   nextBtn.className = "music-btn";
-  nextBtn。innerHTML = '<i class="iconfont icon-forward"></i>';
+  nextBtn.innerHTML = '<i class="iconfont icon-forward"></i>';
   nextBtn.title = "下一曲";
 
-  const listBtnWrapper = document。createElement("div");
-  listBtnWrapper。style.position = "relative";
+  const listBtnWrapper = document.createElement("div");
+  listBtnWrapper.style.position = "relative";
 
   const listBtn = document.createElement("button");
   listBtn.className = "music-btn";
   listBtn.innerHTML = '<i class="iconfont icon-list-ul"></i>';
-  listBtn。title = "播放列表";
+  listBtn.title = "播放列表";
 
   listBtnWrapper.appendChild(listBtn);
 
   const volumeControl = document.createElement("div");
   volumeControl.className = "music-volume-control";
   
-  const volumeBtn = document。createElement("button");
-  volumeBtn。className = "music-btn";
-  volumeBtn。innerHTML = '<i class="iconfont icon-volume"></i>';
+  const volumeBtn = document.createElement("button");
+  volumeBtn.className = "music-btn";
+  volumeBtn.innerHTML = '<i class="iconfont icon-volume"></i>';
   volumeBtn.title = "音量";
 
   const volumeSlider = document.createElement("div");
@@ -830,13 +830,13 @@ function initMusicPlayer() {
 
   volumeControl.append(volumeBtn, volumeSlider);
 
-  controls。append(prevBtn， playBtn， nextBtn, listBtnWrapper, volumeControl);
-  infoSection.append(trackInfo， progressSection， controls);
-  mainSection.append(ballAlbum， expandedAlbum, infoSection);
+  controls.append(prevBtn, playBtn, nextBtn, listBtnWrapper, volumeControl);
+  infoSection.append(trackInfo, progressSection, controls);
+  mainSection.append(ballAlbum, expandedAlbum, infoSection);
 
   // 4.7 创建独立的音波容器
   const waveContainer = document.createElement("div");
-  waveContainer。className = "wave-container";
+  waveContainer.className = "wave-container";
   
   const WAVES_COUNT = 4;
   const waveSpeedValue = window.MusicPlayerWaveSpeed || 2.0;
@@ -844,11 +844,11 @@ function initMusicPlayer() {
   for (let i = 0; i < WAVES_COUNT; i++) {
     const wave = document.createElement("div");
     wave.className = "wave";
-    wave。style。animationDelay = `${i * delayInterval}s`;
+    wave.style.animationDelay = `${i * delayInterval}s`;
     waveContainer.appendChild(wave);
   }
 
-  container.append(waveContainer， mainSection);
+  container.append(waveContainer, mainSection);
 
   // 4.8 创建播放列表
   const playlistDiv = document.createElement("div");
@@ -973,12 +973,12 @@ function initMusicPlayer() {
     
     if (info.cover) {
       ballImage.src = info.cover;
-      expandedImage。src = info.cover;
-      ballImage。style。display = 'block';
-      expandedImage.style。display = 'block';
+      expandedImage.src = info.cover;
+      ballImage.style.display = 'block';
+      expandedImage.style.display = 'block';
     } else {
       ballImage.style.display = 'none';
-      expandedImage.style。display = 'none';
+      expandedImage.style.display = 'none';
     }
   }
 
@@ -994,14 +994,14 @@ function initMusicPlayer() {
 
   // 6.2 暂停
   function pause() {
-    audio。pause();
+    audio.pause();
     setPlaying(false);
   }
 
   // 6.3 上一曲
   function prevTrack() {
-    if (playlist。length === 0) return;
-    currentIndex = (currentIndex - 1 + playlist。length) % playlist.length;
+    if (playlist.length === 0) return;
+    currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
     loadTrack(currentIndex);
     if (isPlaying) play();
   }
@@ -1018,7 +1018,7 @@ function initMusicPlayer() {
   function setPlaying(playing) {
     isPlaying = playing;
     if (playing) {
-      container。classList。add("playing");
+      container.classList.add("playing");
       playBtn.innerHTML = '<i class="iconfont icon-pause"></i>';
       ballOverlay.innerHTML = '<i class="iconfont icon-pause" style="font-size: 24px;"></i>';
       expandedOverlay.innerHTML = '<i class="iconfont icon-pause" style="font-size: 24px;"></i>';
@@ -1062,15 +1062,15 @@ function initMusicPlayer() {
   function updateProgress() {
     const progressFill = progressBar.querySelector('.music-progress-fill');
     const currentTimeEl = timeDisplay.querySelector('.music-current-time');
-    const totalTimeEl = timeDisplay。querySelector('.music-total-time');
+    const totalTimeEl = timeDisplay.querySelector('.music-total-time');
     
-    const current = audio。currentTime;
+    const current = audio.currentTime;
     const duration = audio.duration;
     
     if (duration && !isNaN(duration)) {
       const percentage = (current / duration) * 100;
-      progressFill。style。width = `${percentage}%`;
-      currentTimeEl。textContent = formatTime(current);
+      progressFill.style.width = `${percentage}%`;
+      currentTimeEl.textContent = formatTime(current);
       totalTimeEl.textContent = formatTime(duration);
     }
   }
@@ -1084,14 +1084,14 @@ function initMusicPlayer() {
     isExpanded = true;
     container.classList.add("expanded");
 
-    container。style。opacity = '1';
-    clearTimeout(window。_musicOpacityTimer);
+    container.style.opacity = '1';
+    clearTimeout(window._musicOpacityTimer);
     clearTimeout(autoCollapseTimer);
 
     ballAlbum.style.border = "none";
 
     if (githubLink) {
-      githubLink。style。display = "flex";
+      githubLink.style.display = "flex";
     }
 
     if (isPlaying && animationFrameId === null) {
@@ -1101,8 +1101,8 @@ function initMusicPlayer() {
     // 只有非首次展开时才添加点击外部监听
     if (enableClickOutside) {
       setTimeout(() => {
-        document.addEventListener('click'， handleClickOutside);
-      }， 0);
+        document.addEventListener('click', handleClickOutside);
+      }, 0);
     }
   }
 
@@ -1115,7 +1115,7 @@ function initMusicPlayer() {
     clearTimeout(autoCollapseTimer);
     
     if (githubLink) {
-      githubLink.style。display = "none";
+      githubLink.style.display = "none";
     }
     
     updateTheme();
@@ -1133,13 +1133,13 @@ function initMusicPlayer() {
   // 7.3 启动透明度降低定时器
   function startOpacityTimer() {
     clearTimeout(window._musicOpacityTimer);
-    container。style.opacity = '1';
+    container.style.opacity = '1';
     
     window._musicOpacityTimer = setTimeout(() => {
       if (!isExpanded) {
         container.style.opacity = '0.3';
       }
-    }， 2600);
+    }, 2600);
   }
 
   // 7.4 重置透明度定时器
@@ -1383,24 +1383,24 @@ function initMusicPlayer() {
   // 9.6 音频事件监听
   audio.onended = nextTrack;
   audio.onerror = () => {
-    console。error("音频加载失败");
+    console.error("音频加载失败");
     setPlaying(false);
   };
-  audio。ontimeupdate = updateProgress;
-  audio。onloadedmetadata = updateProgress;
+  audio.ontimeupdate = updateProgress;
+  audio.onloadedmetadata = updateProgress;
 
   // 9.7 进度条点击跳转
-  progressBar。onclick = (e) => {
-    e。stopPropagation();
+  progressBar.onclick = (e) => {
+    e.stopPropagation();
     cancelInitialAutoCollapse();
-    const rect = progressBar。getBoundingClientRect();
-    const clickX = e。clientX - rect。left;
-    const percentage = clickX / rect。width;
-    audio。currentTime = percentage * audio。duration;
+    const rect = progressBar.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = clickX / rect.width;
+    audio.currentTime = percentage * audio.duration;
   };
 
   // 9.8 容器鼠标事件（取消首次自动收起，重置透明度）
-  container。onmouseenter = () => {
+  container.onmouseenter = () => {
     if (isExpanded) {
       cancelInitialAutoCollapse();
     } else {
@@ -1409,13 +1409,13 @@ function initMusicPlayer() {
   };
 
   // 9.9 主题变化监听
-  window。matchMedia("(prefers-color-scheme: dark)")。addEventListener("change"， updateTheme);
-  document。documentElement。addEventListener("themechange"， updateTheme);
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateTheme);
+  document.documentElement.addEventListener("themechange", updateTheme);
   
   const themeObserver = new MutationObserver(updateTheme);
-  themeObserver。observe(document。documentElement， {
-    attributes: true，
-    attributeFilter: ["data-theme"， "class"]，
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme", "class"],
   });
 
   // ================================================================
@@ -1423,23 +1423,23 @@ function initMusicPlayer() {
   // ================================================================
   
   // 10.1 设置音波样式
-  const isMobile = window。innerWidth <= 768;
+  const isMobile = window.innerWidth <= 768;
   const waveStrokeWidth = isMobile 
-    ? (window。MusicPlayerWaveMobileStrokeWidth || "1.5px")
-    : (window。MusicPlayerWaveStrokeWidth || "2.0px");
-  container。style。setProperty('--wave-stroke-width'， waveStrokeWidth);
+    ? (window.MusicPlayerWaveMobileStrokeWidth || "1.5px")
+    : (window.MusicPlayerWaveStrokeWidth || "2.0px");
+  container.style.setProperty('--wave-stroke-width', waveStrokeWidth);
   
-  const waveSpeed = (window。MusicPlayerWaveSpeed || 2.4) + 's';
-  const waveScale = window。MusicPlayerWaveScale || 1.6;
-  container。style。setProperty('--wave-speed'， waveSpeed);
-  container。style。setProperty('--wave-scale'， waveScale);
+  const waveSpeed = (window.MusicPlayerWaveSpeed || 2.4) + 's';
+  const waveScale = window.MusicPlayerWaveScale || 1.6;
+  container.style.setProperty('--wave-speed', waveSpeed);
+  container.style.setProperty('--wave-scale', waveScale);
 
   // 10.2 加载播放列表
   loadPlaylist();
   
   // 10.3 初始化滑块进度显示
-  const initialVolume = audio。volume * 100;
-  container。style。setProperty('--slider-percent'， `${initialVolume}%`);
+  const initialVolume = audio.volume * 100;
+  container.style.setProperty('--slider-percent', `${initialVolume}%`);
   
   // 10.4 初始化主题
   updateTheme();
@@ -1455,8 +1455,8 @@ function initMusicPlayer() {
         collapsePlayer();
         isInitialAutoCollapse = true; // 标记首次自动收起已完成
       }
-    }， autoCollapseDelay);
-  }， 100);
+    }, autoCollapseDelay);
+  }, 100);
 }
 
 // ================================================================
